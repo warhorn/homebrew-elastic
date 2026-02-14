@@ -4,7 +4,6 @@ class ElasticsearchFull < Formula
   url "https://github.com/warhorn/homebrew-elastic/releases/latest/download/homebrew-elastic-source.tar.gz"
   version "7.10.2"
   sha256 "e31cacc34c332a9c1ddcd50182667e6bb02d2dede02fbe8fafc26062aefe5b5f"
-  conflicts_with "elasticsearch"
   conflicts_with "elasticsearch-oss"
 
   def cluster_name
