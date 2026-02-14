@@ -1,7 +1,7 @@
-class ElasticsearchFullAT7102 < Formula
+class ElasticsearchFull < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
-  url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.2-darwin-x86_64.tar.gz?tap=elastic/homebrew-tap"
+  url "https://github.com/warhorn/homebrew-elastic/releases/latest/download/homebrew-elastic-source.tar.gz"
   version "7.10.2"
   sha256 "030b98db23317febfb539fca0f709ff87bfa8a38f2484ca3ea9cc5dd10ac836e"
   conflicts_with "elasticsearch"
@@ -66,36 +66,6 @@ class ElasticsearchFullAT7102 < Formula
     s
   end
 
-#   plist_options :manual => "elasticsearch"
-# 
-#   def plist
-#     <<~EOS
-#       <?xml version="1.0" encoding="UTF-8"?>
-#       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-#       <plist version="1.0">
-#         <dict>
-#           <key>KeepAlive</key>
-#           <false/>
-#           <key>Label</key>
-#           <string>#{plist_name}</string>
-#           <key>ProgramArguments</key>
-#           <array>
-#             <string>#{opt_bin}/elasticsearch</string>
-#           </array>
-#           <key>EnvironmentVariables</key>
-#           <dict>
-#           </dict>
-#           <key>RunAtLoad</key>
-#           <true/>
-#           <key>WorkingDirectory</key>
-#           <string>#{var}</string>
-#           <key>StandardErrorPath</key>
-#           <string>#{var}/log/elasticsearch.log</string>
-#           <key>StandardOutPath</key>
-#           <string>#{var}/log/elasticsearch.log</string>
-#         </dict>
-#       </plist>
-#     EOS
   service do
     run [opt_bin/"elasticsearch"]
     working_dir var
