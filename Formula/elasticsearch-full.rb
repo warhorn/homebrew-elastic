@@ -3,7 +3,7 @@ class ElasticsearchFull < Formula
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://github.com/warhorn/homebrew-elastic/releases/latest/download/homebrew-elastic-source.tar.gz"
   version "7.10.2"
-  sha256 "030b98db23317febfb539fca0f709ff87bfa8a38f2484ca3ea9cc5dd10ac836e"
+  sha256 "e31cacc34c332a9c1ddcd50182667e6bb02d2dede02fbe8fafc26062aefe5b5f"
   conflicts_with "elasticsearch"
   conflicts_with "elasticsearch-oss"
 
