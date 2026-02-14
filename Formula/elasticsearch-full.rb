@@ -1,4 +1,4 @@
-class ElasticsearchFull < Formula
+class ElasticsearchFullAT7102 < Formula
   desc "Distributed search & analytics engine"
   homepage "https://www.elastic.co/products/elasticsearch"
   url "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-7.10.2-darwin-x86_64.tar.gz?tap=elastic/homebrew-tap"
@@ -6,8 +6,6 @@ class ElasticsearchFull < Formula
   sha256 "030b98db23317febfb539fca0f709ff87bfa8a38f2484ca3ea9cc5dd10ac836e"
   conflicts_with "elasticsearch"
   conflicts_with "elasticsearch-oss"
-
-  bottle :unneeded
 
   def cluster_name
     "elasticsearch_#{ENV["USER"]}"
@@ -68,36 +66,41 @@ class ElasticsearchFull < Formula
     s
   end
 
-  plist_options :manual => "elasticsearch"
-
-  def plist
-    <<~EOS
-      <?xml version="1.0" encoding="UTF-8"?>
-      <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-      <plist version="1.0">
-        <dict>
-          <key>KeepAlive</key>
-          <false/>
-          <key>Label</key>
-          <string>#{plist_name}</string>
-          <key>ProgramArguments</key>
-          <array>
-            <string>#{opt_bin}/elasticsearch</string>
-          </array>
-          <key>EnvironmentVariables</key>
-          <dict>
-          </dict>
-          <key>RunAtLoad</key>
-          <true/>
-          <key>WorkingDirectory</key>
-          <string>#{var}</string>
-          <key>StandardErrorPath</key>
-          <string>#{var}/log/elasticsearch.log</string>
-          <key>StandardOutPath</key>
-          <string>#{var}/log/elasticsearch.log</string>
-        </dict>
-      </plist>
-    EOS
+#   plist_options :manual => "elasticsearch"
+# 
+#   def plist
+#     <<~EOS
+#       <?xml version="1.0" encoding="UTF-8"?>
+#       <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+#       <plist version="1.0">
+#         <dict>
+#           <key>KeepAlive</key>
+#           <false/>
+#           <key>Label</key>
+#           <string>#{plist_name}</string>
+#           <key>ProgramArguments</key>
+#           <array>
+#             <string>#{opt_bin}/elasticsearch</string>
+#           </array>
+#           <key>EnvironmentVariables</key>
+#           <dict>
+#           </dict>
+#           <key>RunAtLoad</key>
+#           <true/>
+#           <key>WorkingDirectory</key>
+#           <string>#{var}</string>
+#           <key>StandardErrorPath</key>
+#           <string>#{var}/log/elasticsearch.log</string>
+#           <key>StandardOutPath</key>
+#           <string>#{var}/log/elasticsearch.log</string>
+#         </dict>
+#       </plist>
+#     EOS
+  service do
+    run [opt_bin/"elasticsearch"]
+    working_dir var
+    log_path var/"log/elasticsearch.log"
+    error_log_path var/"log/elasticsearch.log"
   end
 
   test do
@@ -110,6 +113,7 @@ class ElasticsearchFull < Formula
     mkdir testpath/"config"
     cp etc/"elasticsearch/jvm.options", testpath/"config"
     cp etc/"elasticsearch/log4j2.properties", testpath/"config"
+    touch testpath/"config/elasticsearch.yml"
 
     ENV["ES_PATH_CONF"] = testpath/"config"
 
@@ -130,6 +134,7 @@ class ElasticsearchFull < Formula
     port = server.addr[1]
     server.close
 
+    rm testpath/"config/elasticsearch.yml"
     (testpath/"config/elasticsearch.yml").write <<~EOS
       path.data: #{testpath}/data
       path.logs: #{testpath}/logs
